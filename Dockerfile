@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the Go application source code to the container
 COPY . .
 
+# Install PostgreSQL client library
+RUN apk --no-cache add postgresql-client
+
 # Build the Go application
 RUN go build -o app .
 

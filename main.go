@@ -24,6 +24,7 @@ type Message struct {
 func main() {
 	// Open a connection to the PostgreSQL database
 	db, err := sql.Open("postgres", "postgres://root:root@localhost:5432/test_db?sslmode=disable")
+
 	if err != nil {
 		fmt.Println("Error connecting to PostgreSQL database:", err)
 		return
@@ -52,6 +53,16 @@ func main() {
 
 	// Define API endpoint handler to fetch messages
 	http.HandleFunc("/api/messages", func(w http.ResponseWriter, r *http.Request) {
+		// Enable CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+		// Check the request method
+		if r.Method == http.MethodOptions {
+			return
+		}
+
 		// Query messages from the database
 		rows, err := db.Query("SELECT id, username, message, userTimeStamp FROM messages  ORDER BY id DESC LIMIT 10")
 		if err != nil {
