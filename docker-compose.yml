@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  db:
+    container_name: postgres_container2
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: test_db
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    container_name: pgadmin4_container2
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+
+  go_app:
+    container_name: go_app_container
+    build: /Users/Newuser/Documents/TwitchChatApp
+
+    restart: always
+    depends_on:
+      - db
+    environment:
+      OAUTH_TOKEN: "your_twitch_oauth_token"
+      TWITCH_USERNAME: "your_twitch_username"
+      TWITCH_CHANNEL: "your_twitch_channel"
+    links:
+      - db:postgres_container2
