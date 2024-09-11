@@ -23,7 +23,7 @@ type Message struct {
 
 func main() {
 	// Open a connection to the PostgreSQL database
-	db, err := sql.Open("postgres", "postgres://root:root@localhost:5432/test_db?sslmode=disable")
+	db, err := sql.Open("postgres", "postgres://root:root@db:5432/test_db?sslmode=disable")
 
 	if err != nil {
 		fmt.Println("Error connecting to PostgreSQL database:", err)
@@ -171,4 +171,5 @@ func main() {
 			// Respond to the PING
 		}
 	}
+
 }
